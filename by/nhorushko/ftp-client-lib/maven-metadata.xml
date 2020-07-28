@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>by.nhorushko</groupId>
+  <artifactId>ftp-client-lib</artifactId>
+  <versioning>
+    <versions>
+      <version>1.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20200728092820</lastUpdated>
+  </versioning>
+</metadata>
