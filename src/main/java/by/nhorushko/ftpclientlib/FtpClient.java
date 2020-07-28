@@ -61,6 +61,14 @@ public class FtpClient {
         ftp.storeFile(path, new FileInputStream(file));
     }
 
+    public InputStream getInputStream(String path) {
+        try {
+            return ftp.retrieveFileStream(path);
+        } catch (IOException e) {
+            throw new FtpClientException(e);
+        }
+    }
+
     public long getFileSize(String path) {
         try {
             ftp.sendCommand("SIZE", path);

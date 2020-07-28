@@ -14,10 +14,10 @@ import org.mockftpserver.fake.filesystem.FileEntry;
 import org.mockftpserver.fake.filesystem.FileSystem;
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -71,6 +71,14 @@ public class FtpClientIT {
     public void getFileSize_() {
         long fileSize = ftpClient.getFileSize("/data/foobar.txt");
         assertEquals(2000, fileSize);
+    }
+
+    @Test
+    public void getInputStream_() throws IOException {
+        InputStream inputStream = ftpClient.getInputStream("/data/foobar.txt");
+        String actual = new BufferedReader(new InputStreamReader(inputStream))
+                .lines().collect(Collectors.joining("\n"));
+        assertEquals("abcdef 1234567890", actual);
     }
 
     @After
