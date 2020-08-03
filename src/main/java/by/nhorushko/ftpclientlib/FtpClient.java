@@ -30,6 +30,7 @@ public class FtpClient {
         try {
             ftp.connect(server, port);
             int reply = ftp.getReplyCode();
+            ftp.enterLocalPassiveMode();
             if (!FTPReply.isPositiveCompletion(reply)) {
                 ftp.disconnect();
                 throw new IOException("Exception in connecting to FTP Server");
@@ -59,6 +60,15 @@ public class FtpClient {
 
     public void putFileToPath(File file, String path) throws IOException {
         ftp.storeFile(path, new FileInputStream(file));
+    }
+
+    /**
+     * skip first {@param offset} bytes
+     * @return
+     */
+    public InputStream getInputStream(String path, long offset) {
+        ftp.setRestartOffset(offset);
+        return getInputStream(path);
     }
 
     public InputStream getInputStream(String path) {
