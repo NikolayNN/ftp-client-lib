@@ -35,6 +35,8 @@ public class FtpClientIT {
         FileSystem fileSystem = new UnixFakeFileSystem();
         fileSystem.add(new DirectoryEntry("/data"));
         fileSystem.add(new FileEntry("/data/foobar.txt", "abcdef 1234567890"));
+        fileSystem.add(new DirectoryEntry("/data/dir1"));
+        fileSystem.add(new DirectoryEntry("/data/dir2"));
         fakeFtpServer.setFileSystem(fileSystem);
         fakeFtpServer.setServerControlPort(0);
 
@@ -46,8 +48,17 @@ public class FtpClientIT {
     }
 
     @Test
+    public void listDirectories(){
+        Collection<String> actual = ftpClient.listDirectories("/data");
+        assertEquals(2, actual.size());
+        assertThat(actual).contains("dir1");
+        assertThat(actual).contains("dir2");
+    }
+
+    @Test
     public void givenRemoteFile_whenListingRemoteFiles_thenItIsContainedInList() throws IOException {
         Collection<String> files = ftpClient.listFiles("");
+        ftpClient.listFiles("");
         assertThat(files).contains("foobar.txt");
     }
 

@@ -41,6 +41,18 @@ public class FtpClient {
         }
     }
 
+    public Collection<String> listDirectories(String path) {
+        FTPFile[] files;
+        try {
+            files = ftp.listDirectories(path);
+        } catch (IOException e) {
+            throw new FtpClientException(e);
+        }
+        return Arrays.stream(files)
+                .map(FTPFile::getName)
+                .collect(Collectors.toList());
+    }
+
     public Collection<String> listFiles(String path) {
         FTPFile[] files;
         try {
