@@ -1,6 +1,7 @@
 package by.nhorushko.ftpclientlib;
 
 import org.apache.commons.net.PrintCommandListener;
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class FtpClient {
+
     private final String server;
     private final int port;
     private final String user;
@@ -70,6 +72,16 @@ public class FtpClient {
         ftp.retrieveFile(source, out);
     }
 
+    public void deleteFile(String path) {
+        try {
+            if (!ftp.deleteFile(path)) {
+                throw new RuntimeException(String.format("File: %s was not deleted"));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void putFileToPath(File file, String path) throws IOException {
         ftp.storeFile(path, new FileInputStream(file));
     }
@@ -85,6 +97,7 @@ public class FtpClient {
 
     public InputStream getInputStream(String path) {
         try {
+            ftp.setFileType(FTP.BINARY_FILE_TYPE);
             return ftp.retrieveFileStream(path);
         } catch (IOException e) {
             throw new FtpClientException(e);
@@ -107,7 +120,10 @@ public class FtpClient {
 
     public void close() {
         try {
-            ftp.disconnect();
+            ftp.logout();
+            if (ftp.isConnected()) {
+                ftp.disconnect();
+            }
         } catch (IOException e) {
             throw new FtpClientException(e);
         }
