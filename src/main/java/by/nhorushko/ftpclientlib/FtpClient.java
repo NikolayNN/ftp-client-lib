@@ -55,7 +55,7 @@ public class FtpClient {
                 .collect(Collectors.toList());
     }
 
-    public Collection<String> listFiles(String path) {
+    public Collection<FtpClientFile> listFiles(String path) {
         FTPFile[] files;
         try {
             files = ftp.listFiles(path);
@@ -63,7 +63,8 @@ public class FtpClient {
             throw new FtpClientException(e);
         }
         return Arrays.stream(files)
-                .map(FTPFile::getName)
+                .map(FtpClientFile::new)
+                .filter(f -> f.isFile())
                 .collect(Collectors.toList());
     }
 
