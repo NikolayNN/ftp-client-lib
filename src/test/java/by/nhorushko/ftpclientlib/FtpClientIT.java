@@ -4,9 +4,6 @@ package by.nhorushko.ftpclientlib;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockftpserver.core.command.Command;
-import org.mockftpserver.core.command.CommandHandler;
-import org.mockftpserver.core.session.Session;
 import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.UserAccount;
 import org.mockftpserver.fake.filesystem.DirectoryEntry;
@@ -76,6 +73,9 @@ public class FtpClientIT {
         File file = new File(getClass().getClassLoader().getResource("baz.txt").toURI());
         ftpClient.putFileToPath(file, "/buz.txt");
         assertThat(fakeFtpServer.getFileSystem().exists("/buz.txt")).isTrue();
+
+        ftpClient.deleteFile("/buz.txt");
+        assertThat(fakeFtpServer.getFileSystem().exists("/buz.txt")).isFalse();
     }
 
     @Test
