@@ -26,6 +26,10 @@ public class FtpClient {
         this.password = password;
     }
 
+    public FTPClient getFtp() {
+        return ftp;
+    }
+
     public void open() {
         ftp = new FTPClient();
         ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
@@ -40,6 +44,8 @@ public class FtpClient {
             ftp.login(user, password);
         } catch (IOException e) {
             throw new FtpClientException(e);
+        } finally {
+            close();
         }
     }
 
@@ -89,6 +95,7 @@ public class FtpClient {
 
     /**
      * skip first {@param offset} bytes
+     *
      * @return
      */
     public InputStream getInputStream(String path, long offset) {
@@ -119,7 +126,14 @@ public class FtpClient {
         }
     }
 
+    public boolean isAvailable() {
+        return ftp.isAvailable();
+    }
+
     public void close() {
+        if (ftp == null) {
+            return;
+        }
         try {
             ftp.logout();
             if (ftp.isConnected()) {
