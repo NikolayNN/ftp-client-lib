@@ -44,8 +44,6 @@ public class FtpClient {
             ftp.login(user, password);
         } catch (IOException e) {
             throw new FtpClientException(e);
-        } finally {
-            close();
         }
     }
 
