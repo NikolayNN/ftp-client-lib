@@ -13,6 +13,7 @@ import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -56,7 +57,7 @@ public class FtpClientIT {
     public void givenRemoteFile_whenListingRemoteFiles_thenItIsContainedInList() throws IOException {
         Collection<FtpClientFile> actual = ftpClient.listFiles("");
         assertEquals(1, actual.size());
-        assertThat(actual).contains(new FtpClientFile("foobar.txt", 17l, true));
+        assertThat(actual).contains(new FtpClientFile("foobar.txt", 17l, true, Instant.parse("2020-09-14T21:00:00Z")));
     }
 
     @Test
