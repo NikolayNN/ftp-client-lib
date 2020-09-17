@@ -57,6 +57,12 @@ public class FtpClientIT {
     }
 
     @Test
+    public void listDirectories_unexistsDir(){
+        Collection<String> actual = ftpClient.listDirectories("/unexists");
+        assertEquals(0, actual.size());
+    }
+
+    @Test
     public void givenRemoteFile_whenListingRemoteFiles_thenItIsContainedInList() throws IOException {
         Collection<FtpClientFile> actual = ftpClient.listFiles("");
         assertEquals(1, actual.size());
