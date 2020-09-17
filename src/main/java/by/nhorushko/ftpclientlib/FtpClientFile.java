@@ -37,6 +37,10 @@ public class FtpClientFile {
         return size;
     }
 
+    public Instant getLastModified() {
+        return lastModified;
+    }
+
     @Override
     public String toString() {
         return "FtpClientFile{" +

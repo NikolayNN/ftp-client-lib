@@ -13,6 +13,7 @@ import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.sql.Date;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -32,7 +33,9 @@ public class FtpClientIT {
 
         FileSystem fileSystem = new UnixFakeFileSystem();
         fileSystem.add(new DirectoryEntry("/data"));
-        fileSystem.add(new FileEntry("/data/foobar.txt", "abcdef 1234567890"));
+        FileEntry f1 =new FileEntry("/data/foobar.txt", "abcdef 1234567890");
+        f1.setLastModified(Date.from(Instant.parse("2019-12-31T22:00:00Z")));
+        fileSystem.add(f1);
         fileSystem.add(new DirectoryEntry("/data/dir1"));
         fileSystem.add(new DirectoryEntry("/data/dir2"));
         fakeFtpServer.setFileSystem(fileSystem);
@@ -57,7 +60,7 @@ public class FtpClientIT {
     public void givenRemoteFile_whenListingRemoteFiles_thenItIsContainedInList() throws IOException {
         Collection<FtpClientFile> actual = ftpClient.listFiles("");
         assertEquals(1, actual.size());
-        assertThat(actual).contains(new FtpClientFile("foobar.txt", 17l, true, Instant.parse("2020-09-14T21:00:00Z")));
+        assertThat(actual).contains(new FtpClientFile("foobar.txt", 17l, true, Instant.parse("2019-12-31T22:00:00Z")));
     }
 
     @Test
