@@ -32,6 +32,7 @@ public class FtpClient {
 
     public void open() {
         ftp = new FTPClient();
+        ftp.setRemoteVerificationEnabled(false);
         ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
         try {
             ftp.connect(server, port);
