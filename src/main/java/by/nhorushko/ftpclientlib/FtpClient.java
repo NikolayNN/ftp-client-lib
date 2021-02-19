@@ -8,7 +8,7 @@ import org.apache.commons.net.ftp.FTPReply;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class FtpClient {
@@ -48,7 +48,7 @@ public class FtpClient {
         }
     }
 
-    public Collection<String> listDirectories(String path) {
+    public List<String> listDirectories(String path) {
         FTPFile[] files;
         try {
             files = ftp.listDirectories(path);
@@ -60,7 +60,7 @@ public class FtpClient {
                 .collect(Collectors.toList());
     }
 
-    public Collection<FtpClientFile> listFiles(String path) {
+    public List<FtpClientFile> listFiles(String path) {
         FTPFile[] files;
         try {
             files = ftp.listFiles(path);
@@ -73,7 +73,7 @@ public class FtpClient {
                 .collect(Collectors.toList());
     }
 
-    public Collection<FtpClientFile> listFilesAndDirectories(String path) {
+    public List<FtpClientFile> listFilesAndDirectories(String path) {
         FTPFile[] files;
         try {
             files = ftp.listFiles(path);
