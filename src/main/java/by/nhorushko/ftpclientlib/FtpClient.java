@@ -69,7 +69,19 @@ public class FtpClient {
         }
         return Arrays.stream(files)
                 .map(FtpClientFile::new)
-                .filter(f -> f.isFile())
+                .filter(FtpClientFile::isFile)
+                .collect(Collectors.toList());
+    }
+
+    public Collection<FtpClientFile> listFilesAndDirectories(String path) {
+        FTPFile[] files;
+        try {
+            files = ftp.listFiles(path);
+        } catch (IOException e) {
+            throw new FtpClientException(e);
+        }
+        return Arrays.stream(files)
+                .map(FtpClientFile::new)
                 .collect(Collectors.toList());
     }
 

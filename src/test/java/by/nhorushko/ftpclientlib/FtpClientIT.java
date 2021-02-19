@@ -65,8 +65,9 @@ public class FtpClientIT {
     @Test
     public void givenRemoteFile_whenListingRemoteFiles_thenItIsContainedInList() throws IOException {
         Collection<FtpClientFile> actual = ftpClient.listFiles("");
+        System.out.println(actual);
         assertEquals(1, actual.size());
-        assertThat(actual).contains(new FtpClientFile("foobar.txt", 17l, true, Instant.parse("2019-12-31T22:00:00Z")));
+        assertThat(actual).contains(new FtpClientFile("foobar.txt", 17l, true, false, Instant.parse("2019-12-31T21:00:00Z")));
     }
 
     @Test

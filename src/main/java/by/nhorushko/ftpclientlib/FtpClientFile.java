@@ -9,20 +9,27 @@ public class FtpClientFile {
     private final String  name;
     private final long size;
     private final boolean isFile;
+    private final boolean isDirectory;
     private final Instant lastModified;
 
-    public FtpClientFile(String name, long size, boolean isFile, Instant lastModified) {
+    public FtpClientFile(String name, long size, boolean isFile, boolean isDirectory, Instant lastModified) {
         this.name = name;
         this.size = size;
         this.isFile = isFile;
         this.lastModified = lastModified;
+        this.isDirectory = isDirectory;
     }
 
     public FtpClientFile(FTPFile ftpFile) {
         this.isFile = ftpFile.isFile();
+        this.isDirectory = ftpFile.isDirectory();
         this.name = ftpFile.getName();
         this.size = ftpFile.getSize();
         this.lastModified = ftpFile.getTimestamp().toInstant();
+    }
+
+    public boolean isDirectory() {
+        return isDirectory;
     }
 
     public boolean isFile() {
@@ -47,6 +54,7 @@ public class FtpClientFile {
                 "name='" + name + '\'' +
                 ", size=" + size +
                 ", isFile=" + isFile +
+                ", isDirectory=" + isDirectory +
                 ", lastModified=" + lastModified +
                 '}';
     }
@@ -58,12 +66,13 @@ public class FtpClientFile {
         FtpClientFile that = (FtpClientFile) o;
         return getSize() == that.getSize() &&
                 isFile() == that.isFile() &&
+                isDirectory() == that.isDirectory() &&
                 Objects.equals(getName(), that.getName()) &&
-                Objects.equals(lastModified, that.lastModified);
+                Objects.equals(getLastModified(), that.getLastModified());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getSize(), isFile(), lastModified);
+        return Objects.hash(getName(), getSize(), isFile(), isDirectory(), getLastModified());
     }
 }
